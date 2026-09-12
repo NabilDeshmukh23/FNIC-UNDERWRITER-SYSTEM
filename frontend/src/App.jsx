@@ -101,8 +101,10 @@ export default function App() {
 
  const formatLocalDateTime = (dateString) => {
     if (!dateString) return '';
-    // Append 'Z' if missing so JavaScript parses the timestamp as UTC and converts it to local time
-    const isoString = dateString.endsWith('Z') || dateString.includes('+') ? dateString : dateString + 'Z';
+    let isoString = dateString.replace(' ', 'T');
+    if (!isoString.endsWith('Z') && !/[+\-]\d{2}:?\d{2}$/.test(isoString)) {
+      isoString += 'Z';
+    }
     return new Date(isoString).toLocaleString(undefined, {
       year: 'numeric',
       month: '2-digit',
