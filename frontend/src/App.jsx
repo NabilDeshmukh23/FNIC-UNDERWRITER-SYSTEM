@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Mail, Shield, AlertCircle, CheckCircle2, Clock, FileText, ChevronRight, ArrowLeft, Play, Layers } from 'lucide-react';
-
-const API_BASE = 'http://localhost:5001/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 export default function App() {
   const [view, setView] = useState('list');
