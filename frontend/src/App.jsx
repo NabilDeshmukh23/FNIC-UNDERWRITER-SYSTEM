@@ -99,9 +99,11 @@ export default function App() {
     }
   };
 
-  const formatLocalDateTime = (dateString) => {
+ const formatLocalDateTime = (dateString) => {
     if (!dateString) return '';
-    return new Date(dateString).toLocaleString(undefined, {
+    // Append 'Z' if missing so JavaScript parses the timestamp as UTC and converts it to local time
+    const isoString = dateString.endsWith('Z') || dateString.includes('+') ? dateString : dateString + 'Z';
+    return new Date(isoString).toLocaleString(undefined, {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
