@@ -485,7 +485,7 @@ app.post('/api/submissions/:id/generate-assessment', async (req, res) => {
       .map((c) => `### ${c.source_title}\n${c.chunk_text}`)
       .join('\n\n');
 
-    const result = await chatJson(
+   const result = await chatJson(
       'You are a Fire insurance underwriting assistant. Respond with JSON only.',
       `You are assisting a Fire insurance underwriter in drafting an INDICATIVE (non-binding) premium.
 
@@ -495,16 +495,14 @@ ${profile}
 Underwriting guidance (retrieved from knowledge base):
 ${knowledge}
 
-Use this rating approach to draft the indicative premium:
-1. Start from a BASE RATE per mille (per 1,000 of sum insured) appropriate to the occupancy class found in the underwriting guidance.
-2. Adjust the base rate up or down using these factors, and state each adjustment applied:
-   - Construction type: non-combustible construction (concrete/steel) -> decrease; combustible construction (wood-frame etc.) -> increase
-   - Fire safety measures present: sprinklers, fire alarms, extinguishers, fire exits -> decrease per measure confirmed present; ABSENCE of expected measures -> increase
-   - Occupancy/usage risk: standard office/retail -> neutral; storage of flammable or hazardous materials -> increase
-   - Claims history: no prior claims -> decrease; frequent or recent claims -> increase
-   - Sum insured size: very large sums insured may warrant a lower marginal rate, note this if sum insured is unusually high
-3. Multiply the adjusted rate per mille by the sum insured to get the indicative annual premium.
-4. Always state this is INDICATIVE ONLY, subject to underwriter review, survey findings, and final pricing approval - never a bound/final quote.
+Use this strict rating approach to draft the indicative premium:
+1. Start from the base rate per mille (per 1,000 of sum insured) found in the underwriting guidance.
+2. Apply mandatory risk adjustments explicitly:
+   - Building Age Loading: Add +0.25‰ if the building age from the valuation report is 5 years or older.
+   - Claims History Loading: Add +0.10‰ per historical claim reported in the 5-year loss history.
+   - Fire Safety Discount: Subtract -0.15‰ if full active wet-pipe sprinklers and certified civil defense fire safety measures are present.
+3. Multiply the final adjusted rate per mille by the total sum insured to get the indicative annual premium.
+4. Always state this is INDICATIVE ONLY, subject to underwriter review and final survey approval.
 
 Respond in JSON:
 {
